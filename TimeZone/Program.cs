@@ -6,7 +6,7 @@
     using System.Text;
     using System.Xml.Linq;
 
-    public class Program
+    public class Program : App
     {
         private const string GreenwichStandardTime = "Greenwich Standard Time";
         private const string ChinaStandardTime = "China Standard Time";
@@ -25,27 +25,6 @@
 
             Console.WriteLine("Press any key to exit.");
             Console.ReadKey();
-        }
-
-        private static bool ContainsArg(string[] args, string arg)
-        {
-            if (args == null || arg == null) 
-                return false;
-
-            return args
-                .Where(a => a != null)
-                .Any(a => arg.Equals(a.Trim(), StringComparison.OrdinalIgnoreCase));
-        }
-
-        private static void SetupConsole()
-        {
-            if (Console.LargestWindowWidth > 100 && Console.LargestWindowHeight > 50)
-            {
-                Console.SetWindowSize(Console.LargestWindowWidth - 20, Console.LargestWindowHeight - 20);
-
-                if (Console.BufferHeight < 10000)
-                    Console.SetBufferSize(Console.LargestWindowWidth - 20, 10000);
-            }
         }
 
         private static void InvestigateOffsetDiffs()
