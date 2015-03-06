@@ -5,17 +5,37 @@
 
     public abstract class App
     {
-        protected static bool ContainsArg(string[] args, string arg)
-        {
-            if (args == null || arg == null)
-                return false;
+        private static string[] arguments;
 
-            return args
+        protected static void Initialise(string[] args)
+        {
+            arguments = args;
+
+            SetupConsole();
+
+            Log.Info("Started {0}...", Environment.CommandLine);
+        }
+
+        protected static void Finalise()
+        {
+            Log.Info("Finished {0}...", Environment.CommandLine);
+            Log.Info("Press any key to exit.");
+            Console.ReadKey();            
+        }
+
+        protected static bool WasArgPassed(string arg)
+        {
+            if (arguments == null || arg == null)
+            {
+                return false;
+            }
+
+            return arguments
                 .Where(a => a != null)
                 .Any(a => arg.Equals(a.Trim(), StringComparison.OrdinalIgnoreCase));
         }
 
-        protected static void SetupConsole()
+        private static void SetupConsole()
         {
             if (Console.LargestWindowWidth <= 100 || Console.LargestWindowHeight <= 50)
             {
@@ -23,11 +43,17 @@
             }
 
             Console.SetWindowSize(
-                Console.LargestWindowWidth - 20, 
-                Console.LargestWindowHeight - 20);
+                width: Console.LargestWindowWidth - 20, 
+                height: Console.LargestWindowHeight - 20);
 
-            if (Console.BufferHeight < 10000)
-                Console.SetBufferSize(Console.LargestWindowWidth - 20, 10000);
+            if (Console.BufferHeight >= 10000)
+            {
+                return;
+            }
+
+            Console.SetBufferSize(
+                width: Console.LargestWindowWidth - 20,
+                height: 10000);
         }
     }
 }

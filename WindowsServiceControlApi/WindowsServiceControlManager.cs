@@ -198,7 +198,7 @@
         {
             var win32Exception = new Win32Exception();
 
-            Console.WriteLine(messageFormat, args);
+            Log.Error(messageFormat, args);
 
             throw win32Exception;
         }

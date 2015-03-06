@@ -13,18 +13,19 @@
 
         public static void Main(string[] args)
         {
-            SetupConsole();
+            Initialise(args);
 
             IsDst(ChinaStandardTime, new DateTime(1991, 9, 10, 0, 0, 0, DateTimeKind.Utc));
             IsDst(GreenwichStandardTime, new DateTime(2014, 7, 16, 0, 0, 0, DateTimeKind.Utc));
 
             InvestigateOffsetDiffs();
 
-            if (ContainsArg(args, "generate-sql"))
+            if (WasArgPassed("generate-sql"))
+            {
                 ConvertDstFileToSql();
+            }
 
-            Console.WriteLine("Press any key to exit.");
-            Console.ReadKey();
+            Finalise();
         }
 
         private static void InvestigateOffsetDiffs()
@@ -33,19 +34,25 @@
             var dateTime = new DateTime(1991, 1, 1, 0, 0, 0);
 
             for (int i = 0; i < 366; i++)
+            {
                 GetOffsetDiff(dateTime.AddDays(i), ChinaStandardTime);
+            }
 
             // UK DST start date 
             dateTime = new DateTime(2014, 3, 30, 0, 0, 0);
 
             for (int i = 0; i < 1440; i++)
+            {
                 GetOffsetDiff(dateTime.AddMinutes(i), ChinaStandardTime);
+            }
 
             // UK DST end date
             dateTime = new DateTime(2014, 10, 26, 0, 0, 0);
 
             for (int i = 0; i < 1440; i++)
-                GetOffsetDiff(dateTime.AddMinutes(i), ChinaStandardTime);            
+            {
+                GetOffsetDiff(dateTime.AddMinutes(i), ChinaStandardTime);
+            }
         }
 
         private static void GetOffsetDiff(DateTime dateTime, string timezoneId)
@@ -58,7 +65,7 @@
             TimeSpan localOffset = localTimeZone.GetUtcOffset(instant);
             TimeSpan otherOffset = otherTimeZone.GetUtcOffset(instant);
 
-            Console.WriteLine("{0} - {1}", instant, otherOffset - localOffset);           
+            Log.Info("{0} - {1}", instant, otherOffset - localOffset);           
         }
 
         private static void IsDst(string timezoneId, DateTime dateTime)
@@ -69,7 +76,7 @@
 
             bool isDaylightSavings = tzi.IsDaylightSavingTime(dateTime);
 
-            Console.WriteLine(
+            Log.Info(
                 "'{0}' was {1} in DST on {2}",
                 timezoneId,
                 isDaylightSavings ? string.Empty : "NOT",
@@ -105,15 +112,26 @@
                     endDate = ParseDate(cells[1].Value, year);
                 }
 
-                string sql = string.Format(
-                    "INSERT CalendarDstUk ([Year], StartDateTimeLocal, EndDateTimeLocal) " +
-                    "VALUES (CONVERT(datetime, '{0}', 120), CONVERT(datetime, '{1}', 120), CONVERT(datetime, '{2}', 120))",
-                    new DateTime(startDate.Year, 1, 1).ToString("yyyy/MM/dd HH:mm:ss"),
-                    startDate.ToString("yyyy/MM/dd HH:mm:ss"),
-                    endDate.ToString("yyyy/MM/dd HH:mm:ss"));
+                const string SqlDateFormat = "yyyy/MM/dd HH:mm:ss";
+
+                var sql = string.Format(
+                    "INSERT CalendarDstUk (" + 
+                        "[Year], " + 
+                        "StartDateTimeLocal, " + 
+                        "EndDateTimeLocal " +
+                    ") VALUES (" + 
+                        "CONVERT(datetime, '{0}', 120), " + 
+                        "CONVERT(datetime, '{1}', 120), " + 
+                        "CONVERT(datetime, '{2}', 120)" + 
+                    ")",
+                    new DateTime(startDate.Year, 1, 1).ToString(SqlDateFormat),
+                    startDate.ToString(SqlDateFormat),
+                    endDate.ToString(SqlDateFormat));
 
                 if (startDate.Year >= 1972)
+                {
                     fileText.AppendLine(sql);
+                }
 
                 Console.WriteLine(sql);
             }

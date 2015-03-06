@@ -1,6 +1,5 @@
 ﻿namespace Play.WindowsServiceControlApi
 {
-    using System;
     using System.Net;
 
     public class Program : App
@@ -23,7 +22,7 @@
 
         public static void Main(string[] args)
         {
-            SetupConsole();
+            Initialise(args);
 
             bool exists = WindowsServiceControlManager.IsServiceInstalled(
                 TargetMachine,
@@ -44,8 +43,7 @@
                 ServiceExePath,
                 new NetworkCredential(ServiceLogOnUser, ServiceLogOnPassword, DomainName));
 
-            Console.WriteLine("Press any key to exit.");
-            Console.ReadKey();
+            Finalise();
         }
     }
 }
