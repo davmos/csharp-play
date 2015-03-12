@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Play", "Play\Play.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsServiceControlApi", "WindowsServiceControlApi\WindowsServiceControlApi.csproj", "{AF6F2102-716D-42DE-B3AD-C5C19134CA6B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Selenium", "Selenium\Selenium.csproj", "{9E2998D8-DDD0-46D4-A243-9586EF9E259C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{AF6F2102-716D-42DE-B3AD-C5C19134CA6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF6F2102-716D-42DE-B3AD-C5C19134CA6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF6F2102-716D-42DE-B3AD-C5C19134CA6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E2998D8-DDD0-46D4-A243-9586EF9E259C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E2998D8-DDD0-46D4-A243-9586EF9E259C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E2998D8-DDD0-46D4-A243-9586EF9E259C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E2998D8-DDD0-46D4-A243-9586EF9E259C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
