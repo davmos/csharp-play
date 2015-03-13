@@ -7,8 +7,8 @@
     <ProjectGuid>{AF6F2102-716D-42DE-B3AD-C5C19134CA6B}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WindowsServiceControlApi</RootNamespace>
-    <AssemblyName>WindowsServiceControlApi</AssemblyName>
+    <RootNamespace>Play.WindowsServiceControlApi</RootNamespace>
+    <AssemblyName>Play.WindowsServiceControlApi</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
