@@ -207,6 +207,11 @@
             string hostName,
             Win32ServiceControl.SCM_ACCESS access = Win32ServiceControl.SCM_ACCESS.SC_MANAGER_CREATE_SERVICE)
         {
+            if (Environment.MachineName.Equals(hostName, StringComparison.OrdinalIgnoreCase))
+            {
+                hostName = null;
+            }
+
             var serviceControlManagerHandle = Win32ServiceControl.OpenSCManager(
                 hostName,
                 null,

@@ -13,6 +13,11 @@
 
         internal Impersonator(NetworkCredential credential)
         {
+            if (IsRunningAsUser(credential.UserName))
+            {
+                return;
+            }
+
             IntPtr adminToken;
 
             int returnValue = Win32Impersonation.LogonUser(
@@ -52,11 +57,21 @@
             if (disposing)
             {
                 // free managed objects here
-                this.context.Dispose();
+                if (this.context != null)
+                {
+                    this.context.Dispose();
+                }
             }
 
             // free unmanaged objects here
             this.disposed = true;
+        }
+
+        private static bool IsRunningAsUser(string userName)
+        {
+            return Environment.UserName.Equals(
+                userName, 
+                StringComparison.OrdinalIgnoreCase);
         }
     }
 }

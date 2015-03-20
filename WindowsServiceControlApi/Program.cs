@@ -1,47 +1,49 @@
 ﻿namespace Play.WindowsServiceControlApi
 {
+    using System;
     using System.Net;
 
     public class Program : App
     {
-        private const string DomainName = "DomainName";
-
-        private const string WindowsServiceName = "Test Windows Service";
-
-        private const string TargetMachine = "MachineName";
-
-        private const string ServiceExePath = @"C:\change\me.exe";
-
-        private const string AdminUser = "administrator";
-
-        private const string AdminPassword = "ChangeMe";
-
-        private const string ServiceLogOnUser = "LogonUser";
-
-        private const string ServiceLogOnPassword = "ChangeMe";
-
         public static void Main(string[] args)
         {
             Initialise(args);
 
-            bool exists = WindowsServiceControlManager.IsServiceInstalled(
-                TargetMachine,
-                WindowsServiceName);
+            var domainName = args[0];
+            var targetMachine = args[1];
+            var adminUser = args[2];
+            var adminPassword = args[3];
+            var serviceLogOnUser = args[4];
+            var serviceLogOnPassword = args[5];
+            var serviceExePath = args[6];
+            var windowsServiceName = args[7];
+            var windowsServiceDescription = args[8];
+
+            var removeOnly 
+                = args.Length > 9 
+                && "-removeOnly".Equals(args[9], StringComparison.OrdinalIgnoreCase);
+
+            var exists = WindowsServiceControlManager.IsServiceInstalled(
+                targetMachine,
+                windowsServiceName);
 
             var windowsServiceControlManager = new WindowsServiceControlManager(
-                TargetMachine,
-                new NetworkCredential(AdminUser, AdminPassword, DomainName));
+                targetMachine,
+                new NetworkCredential(adminUser, adminPassword, domainName));
 
             if (exists)
             {
-                windowsServiceControlManager.RemoveService(WindowsServiceName);
+                windowsServiceControlManager.RemoveService(windowsServiceName);
             }
 
-            windowsServiceControlManager.InstallService(
-                WindowsServiceName,
-                WindowsServiceName + " Description",
-                ServiceExePath,
-                new NetworkCredential(ServiceLogOnUser, ServiceLogOnPassword, DomainName));
+            if (!removeOnly)
+            {
+                windowsServiceControlManager.InstallService(
+                    windowsServiceName,
+                    windowsServiceDescription,
+                    serviceExePath,
+                    new NetworkCredential(serviceLogOnUser, serviceLogOnPassword, domainName));
+            }
 
             Finalise();
         }
